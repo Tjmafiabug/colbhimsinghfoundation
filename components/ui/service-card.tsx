@@ -60,7 +60,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         ref={ref}
         variants={cardAnimation}
         whileHover="hover"
-        {...(props as React.HTMLAttributes<HTMLDivElement>)}
+        {...props}
       >
         <div className="relative z-10 flex flex-col h-full gap-4">
           {eyebrow && (
