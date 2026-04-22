@@ -9,7 +9,7 @@ type Ref = React.RefObject<HTMLElement | null>
 
 function useScrollAnimation(): [Ref, boolean] {
   const [inView, setInView] = useState(false)
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const el = ref.current

@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 
 export default function NewsletterStrip() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);

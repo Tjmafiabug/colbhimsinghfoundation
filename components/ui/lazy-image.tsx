@@ -50,7 +50,7 @@ export function LazyImage({
 
   return (
     <AspectRatio
-      ref={ref}
+      ref={ref as React.RefObject<HTMLDivElement>}
       ratio={ratio}
       className={cn('relative size-full overflow-hidden rounded-lg', AspectRatioClassName)}
     >

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { type FormEvent, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 
 type State = 'idle' | 'loading' | 'success' | 'error'
@@ -9,7 +9,7 @@ export default function NewsletterForm() {
   const [state, setState] = useState<State>('idle')
   const [email, setEmail] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setState('loading')
     setTimeout(() => {
