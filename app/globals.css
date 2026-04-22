@@ -1,0 +1,421 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   Inspired by Gates Foundation editorial clarity + Indian warmth
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Brand — saffron (Indian identity) */
+  --color-saffron:       #E8600A;
+  --color-saffron-light: #FF8C3A;
+  --color-saffron-dark:  #C44E00;
+
+  /* Authority — deep navy (Gates Foundation trust) */
+  --color-navy:          #1B3A6B;
+  --color-navy-light:    #2D5FA8;
+  --color-navy-dark:     #0D2447;
+  --color-navy-muted:    #E8EDF5;
+
+  /* Backgrounds */
+  --color-cream:         #FDFAF5;
+  --color-cream-warm:    #F5EDE0;
+  --color-cream-muted:   #EDE0C8;
+
+  /* Typography */
+  --color-void:          #0F0C08;
+  --color-stone-ed:      #3D3630;
+  --color-stone-muted:   #7A6E65;
+  --color-stone-light:   #B5A89A;
+
+  /* Spatial rhythm */
+  --section-y:    clamp(4.5rem, 8vw, 7rem);
+  --section-y-lg: clamp(6rem, 10vw, 10rem);
+  --container:    80rem;
+
+  /* Motion — all transitions use these, never linear/ease-in-out */
+  --ease-smooth:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-cinematic: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-fast:  350ms;
+  --duration-base:  500ms;
+  --duration-slow:  800ms;
+
+  /* Radius */
+  --radius-card: 1.5rem;
+  --radius-pill: 9999px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    scroll-behavior: smooth;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-cream text-void antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  }
+
+  ::selection {
+    background: rgba(232, 96, 10, 0.14);
+    color: var(--color-void);
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-navy ring-offset-2;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /*
+   * Grain noise overlay
+   * Fixed + pointer-events-none → GPU composited, never triggers repaints on scroll.
+   * opacity 0.025 = barely perceptible physical paper feel (Gates Foundation aesthetic).
+   */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    background-repeat: repeat;
+    mix-blend-mode: multiply;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COMPONENTS
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* ── Layout ──────────────────────────────────────────── */
+
+  .container-site {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-12;
+    max-width: var(--container);
+  }
+
+  .section-spacing {
+    padding-top:    var(--section-y);
+    padding-bottom: var(--section-y);
+  }
+
+  .section-spacing-lg {
+    padding-top:    var(--section-y-lg);
+    padding-bottom: var(--section-y-lg);
+  }
+
+  /* Thin editorial rule — Gates Foundation between-section divider */
+  .rule {
+    @apply w-full h-px;
+    background: rgba(15, 12, 8, 0.08);
+  }
+
+  .rule-light {
+    @apply w-full h-px;
+    background: rgba(253, 250, 245, 0.12);
+  }
+
+  /* ── Typography ──────────────────────────────────────── */
+
+  .heading-display {
+    @apply font-display font-semibold tracking-tight;
+  }
+
+  /*
+   * Eyebrow tag — precedes every major H1/H2 across the site.
+   * Gates Foundation uses this exact treatment: 10px / wide tracking / uppercase / accent color.
+   */
+  .eyebrow {
+    @apply inline-block font-sans text-[10px] font-semibold
+           uppercase tracking-[0.22em] text-saffron;
+  }
+
+  .eyebrow-navy {
+    @apply inline-block font-sans text-[10px] font-semibold
+           uppercase tracking-[0.22em] text-navy;
+  }
+
+  .eyebrow-muted {
+    @apply inline-block font-sans text-[10px] font-semibold
+           uppercase tracking-[0.22em] text-stone-muted;
+  }
+
+  /* Editorial pull quote */
+  .editorial-quote {
+    @apply font-display italic text-display-lg leading-[1.2] tracking-tight;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────── */
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2.5 rounded-full
+           bg-saffron px-7 py-3.5 text-sm font-semibold text-white
+           transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+           hover:bg-saffron-dark active:scale-[0.98]
+           focus-visible:ring-2 focus-visible:ring-saffron focus-visible:ring-offset-2
+           cursor-pointer;
+  }
+
+  .btn-navy {
+    @apply inline-flex items-center gap-2.5 rounded-full
+           bg-navy px-7 py-3.5 text-sm font-semibold text-white
+           transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+           hover:bg-navy-dark active:scale-[0.98]
+           focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2
+           cursor-pointer;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2.5 rounded-full
+           border border-void/15 px-7 py-3.5 text-sm font-semibold text-void
+           transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+           hover:border-void/40 hover:bg-void/5 active:scale-[0.98]
+           cursor-pointer;
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center gap-2.5 rounded-full
+           border border-white/25 px-7 py-3.5 text-sm font-semibold text-white
+           transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+           hover:border-white/60 hover:bg-white/10 active:scale-[0.98]
+           cursor-pointer;
+  }
+
+  /*
+   * Button-in-Button trailing icon
+   * The arrow never sits naked — it lives inside its own small circle.
+   * Apply to the icon wrapper inside any .btn-* with group on the button.
+   */
+  .btn-icon-trail {
+    @apply w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0
+           transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+           group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .btn-icon-trail-dark {
+    @apply w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0
+           transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+           group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:scale-105;
+    background: rgba(15, 12, 8, 0.07);
+  }
+
+  /* ── Cards ───────────────────────────────────────────── */
+
+  /*
+   * card-editorial — Gates Foundation article card.
+   * Clean white surface, ambient shadow, no harsh borders.
+   */
+  .card-editorial {
+    @apply bg-white overflow-hidden
+           transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+    box-shadow: 0 1px 2px rgba(15,12,8,0.04), 0 4px 16px rgba(15,12,8,0.06);
+  }
+
+  .card-editorial:hover {
+    box-shadow: 0 4px 8px rgba(15,12,8,0.06), 0 16px 48px rgba(15,12,8,0.10);
+    transform: translateY(-2px);
+  }
+
+  /*
+   * card-bezel — Doppelrand nested architecture.
+   * Outer shell: translucent with hairline ring.
+   * Inner core:  white with concentric radius + inset highlight.
+   */
+  .card-bezel {
+    @apply rounded-[2rem] p-2;
+    background: rgba(181, 168, 154, 0.08);
+    box-shadow: 0 0 0 1px rgba(15, 12, 8, 0.05);
+  }
+
+  .card-bezel-inner {
+    @apply bg-white overflow-hidden;
+    border-radius: calc(2rem - 0.5rem);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.9),
+                0 2px 4px rgba(15,12,8,0.05);
+  }
+
+  /* ── Impact / Stats ──────────────────────────────────── */
+
+  /* Gates Foundation pattern: massive number + small label + description */
+  .stat-number {
+    @apply font-display text-display-xl leading-none;
+  }
+
+  .stat-label {
+    @apply font-sans text-[10px] tracking-[0.2em] uppercase text-saffron mt-1;
+  }
+
+  .stat-description {
+    @apply font-sans text-xs text-stone-muted mt-1.5 leading-relaxed;
+  }
+
+  /* ── Tags / Pills ────────────────────────────────────── */
+
+  .tag-pill {
+    @apply inline-block rounded-full bg-saffron/10 px-3 py-1
+           text-xs font-semibold uppercase tracking-wider text-saffron;
+  }
+
+  .tag-pill-navy {
+    @apply inline-block rounded-full px-3 py-1
+           text-xs font-semibold uppercase tracking-wider text-navy;
+    background: rgba(27, 58, 107, 0.08);
+  }
+
+  .tag-pill-dark {
+    @apply inline-block rounded-full bg-white/10 px-3 py-1
+           text-xs font-semibold uppercase tracking-wider text-white/80;
+  }
+
+  /* ── Section Bands ───────────────────────────────────── */
+
+  /* Dark void band — used for Colonel's legacy section */
+  .band-dark {
+    @apply bg-void text-cream;
+  }
+
+  /* Navy gradient band — authority / mission tone */
+  .band-navy {
+    background: linear-gradient(135deg, #0D2447 0%, #1B3A6B 100%);
+    @apply text-cream;
+  }
+
+  /* Saffron band — newsletter / CTA sections */
+  .band-saffron {
+    @apply bg-saffron text-white;
+  }
+
+  /* Cream warm band — alternating section backgrounds */
+  .band-warm {
+    @apply bg-cream-warm;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   UTILITIES
+   ───────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Animation delays */
+  .animate-delay-75  { animation-delay:  75ms; }
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-150 { animation-delay: 150ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+
+  /*
+   * Scroll reveal system — pair with IntersectionObserver in JS.
+   * Add .reveal / .reveal-blur / .reveal-scale to any element.
+   * JS adds .is-visible when the element enters the viewport.
+   * NEVER animates top/left/width/height — only transform + opacity + filter.
+   */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity  var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-blur {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(4px);
+    transition:
+      opacity   var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth),
+      filter    var(--duration-slow) var(--ease-smooth);
+  }
+
+  .reveal-blur.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.97);
+    transition:
+      opacity   var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth);
+  }
+
+  .reveal-scale.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Cascade stagger — set --i on each child via inline style or nth-child */
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity   var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .reveal-stagger.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REDUCED MOTION — respect user preferences, no exceptions
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-blur,
+  .reveal-scale,
+  .reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
