@@ -43,13 +43,13 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         scale: 1.1,
         rotate: 3,
         x: 10,
-        transition: { duration: 0.4, ease: 'easeInOut' },
+        transition: { duration: 0.4, ease: 'easeInOut' as const },
       },
     }
     const arrowAnimation = {
       hover: {
         x: 5,
-        transition: { duration: 0.3, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' as const },
+        transition: { duration: 0.3, ease: 'easeInOut' as const, repeat: Infinity, repeatType: 'reverse' as const },
       },
     }
 
