@@ -23,9 +23,8 @@ const cardVariants = cva(
   }
 )
 
-export interface ServiceCardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onDragEnter' | 'onDragLeave' | 'onDragOver' | 'onDrop'>,
-    VariantProps<typeof cardVariants> {
+export interface ServiceCardProps extends VariantProps<typeof cardVariants> {
+  className?: string
   title: string
   description: string
   href: string
@@ -35,7 +34,7 @@ export interface ServiceCardProps
 }
 
 const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
-  ({ className, variant, title, description, href, imgSrc, imgAlt, eyebrow, ...props }, ref) => {
+  ({ className, variant, title, description, href, imgSrc, imgAlt, eyebrow }, ref) => {
     const cardAnimation = {
       hover: { scale: 1.02, transition: { duration: 0.3 } },
     }
@@ -60,7 +59,6 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
         ref={ref}
         variants={cardAnimation}
         whileHover="hover"
-        {...props}
       >
         <div className="relative z-10 flex flex-col h-full gap-4">
           {eyebrow && (
