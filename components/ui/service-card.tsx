@@ -24,7 +24,7 @@ const cardVariants = cva(
 )
 
 export interface ServiceCardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onDragEnter' | 'onDragLeave' | 'onDragOver' | 'onDrop'>,
     VariantProps<typeof cardVariants> {
   title: string
   description: string
